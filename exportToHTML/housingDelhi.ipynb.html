@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>housingDelhi.ipynb</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #7a7e85;}
+.s1 { color: #cf8e6d;}
+.s2 { color: #bcbec4;}
+.s3 { color: #bcbec4;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+housingDelhi.ipynb</font>
+</center></td></tr></table>
+<pre><span class="s0">#%% 
+</span><span class="s1">import </span><span class="s2">pandas </span><span class="s1">as </span><span class="s2">pd</span>
+<span class="s2">df</span><span class="s3">=</span><span class="s2">pd</span><span class="s3">.</span><span class="s2">read_csv</span><span class="s3">(</span><span class="s4">'Delhi_v2.csv'</span><span class="s3">)</span>
+<span class="s0">#%% 
+</span><span class="s2">df</span><span class="s3">.</span><span class="s2">drop</span><span class="s3">(</span><span class="s2">columns</span><span class="s3">=[</span><span class="s4">'Address'</span><span class="s3">,</span><span class="s4">'latitude'</span><span class="s3">,</span><span class="s4">'longitude'</span><span class="s3">,</span><span class="s4">'Status'</span><span class="s3">,</span><span class="s4">'neworold'</span><span class="s3">,</span><span class="s4">'Furnished_status'</span><span class="s3">,</span><span class="s4">'Lift'</span><span class="s3">,</span><span class="s4">'Landmarks'</span><span class="s3">,</span><span class="s4">'type_of_building'</span><span class="s3">,</span><span class="s4">'desc'</span><span class="s3">,</span><span class="s4">'Price_sqft'</span><span class="s3">,</span><span class="s4">'Unnamed: 0'</span><span class="s3">],</span><span class="s2">inplace</span><span class="s3">=</span><span class="s1">True</span><span class="s3">)</span>
+<span class="s0">#%% 
+</span><span class="s2">df</span><span class="s3">=</span><span class="s2">df</span><span class="s3">.</span><span class="s2">fillna</span><span class="s3">(</span><span class="s5">0</span><span class="s3">)</span>
+<span class="s0">#%% 
+</span><span class="s1">import </span><span class="s2">tensorflow </span><span class="s1">as </span><span class="s2">tf</span>
+<span class="s1">from </span><span class="s2">keras</span><span class="s3">.</span><span class="s2">models </span><span class="s1">import </span><span class="s2">Sequential</span>
+<span class="s1">from </span><span class="s2">keras</span><span class="s3">.</span><span class="s2">layers </span><span class="s1">import </span><span class="s2">Dense</span><span class="s3">, </span><span class="s2">Activation</span>
+<span class="s1">from </span><span class="s2">sklearn</span><span class="s3">.</span><span class="s2">model_selection </span><span class="s1">import </span><span class="s2">train_test_split</span>
+
+<span class="s2">features</span><span class="s3">=</span><span class="s2">df</span><span class="s3">[[</span><span class="s4">'area'</span><span class="s3">,</span><span class="s4">'Bedrooms'</span><span class="s3">,</span><span class="s4">'Bathrooms'</span><span class="s3">,</span><span class="s4">'Balcony'</span><span class="s3">,</span><span class="s4">'parking'</span><span class="s3">]]</span>
+<span class="s2">label</span><span class="s3">=</span><span class="s2">df</span><span class="s3">[[</span><span class="s4">'price'</span><span class="s3">]]</span>
+
+<span class="s2">X_train</span><span class="s3">,</span><span class="s2">X_test</span><span class="s3">,</span><span class="s2">y_train</span><span class="s3">,</span><span class="s2">y_test</span><span class="s3">=</span><span class="s2">train_test_split</span><span class="s3">(</span><span class="s2">features</span><span class="s3">,</span><span class="s2">label</span><span class="s3">,</span><span class="s2">test_size</span><span class="s3">=</span><span class="s5">0.2</span><span class="s3">,</span><span class="s2">random_state</span><span class="s3">=</span><span class="s5">42</span><span class="s3">)</span>
+
+<span class="s2">model</span><span class="s3">=</span><span class="s2">Sequential</span><span class="s3">([</span>
+    <span class="s2">Dense</span><span class="s3">(</span><span class="s2">units</span><span class="s3">=</span><span class="s5">16</span><span class="s3">,</span><span class="s2">activation</span><span class="s3">=</span><span class="s4">'relu'</span><span class="s3">),</span>
+    <span class="s2">Dense</span><span class="s3">(</span><span class="s2">units</span><span class="s3">=</span><span class="s5">16</span><span class="s3">,</span><span class="s2">activation</span><span class="s3">=</span><span class="s4">'relu'</span><span class="s3">),</span>
+    <span class="s2">Dense</span><span class="s3">(</span><span class="s5">1</span><span class="s3">)</span>
+<span class="s3">])</span>
+
+<span class="s2">model</span><span class="s3">.</span><span class="s2">compile</span><span class="s3">(</span><span class="s2">optimizer</span><span class="s3">=</span><span class="s4">'adam'</span><span class="s3">,</span>
+              <span class="s2">loss</span><span class="s3">=</span><span class="s4">'mae'</span><span class="s3">,</span>
+              <span class="s2">metrics</span><span class="s3">=[</span><span class="s4">'accuracy'</span><span class="s3">])</span>
+<span class="s0">#%% 
+</span><span class="s2">hist </span><span class="s3">= </span><span class="s2">model</span><span class="s3">.</span><span class="s2">fit</span><span class="s3">(</span><span class="s2">X_train</span><span class="s3">,</span><span class="s2">y_train</span><span class="s3">,</span>
+                 <span class="s2">validation_data</span><span class="s3">=(</span><span class="s2">X_test</span><span class="s3">,</span><span class="s2">y_test</span><span class="s3">),</span>
+                 <span class="s2">batch_size</span><span class="s3">=</span><span class="s5">32</span><span class="s3">,</span><span class="s2">epochs</span><span class="s3">=</span><span class="s5">100</span><span class="s3">)</span>
+<span class="s0">#%% md 
+</span></pre>
+</body>
+</html>
